@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="description" content="SandWake: glide a woven carpet over procedural sand dunes. A lightweight 3D browser game with an Amazigh art direction.">
+  <title>SandWake</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500;600&family=Forum&family=Jost:wght@300;400;500&family=Noto+Serif+SC:wght@400&display=swap">
+  <style>
+/*__STYLES__*/
+  </style>
+</head>
+<body>
+  <div id="app" class="intro-on" tabindex="0">
+    <canvas id="c" data-i-aria="canvasAria" role="img" aria-label="Sand dunes at dusk"></canvas>
+
+    <div id="hud">
+      <div id="boostfx"></div>
+      <div id="speed"><span id="speedv">0</span><small>km/h</small></div>
+      <div id="boost" role="meter" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100" data-i-aria="boostLabel">
+        <span class="lbl" data-i="boostLabel"></span>
+        <span class="bar"><i id="boostFill"></i></span>
+        <span class="gain" id="boostGain"></span>
+      </div>
+      <div id="air" aria-live="polite">
+        <div class="k" id="airK"></div>
+        <div class="v" id="airV"></div>
+        <div class="s" id="airS"></div>
+      </div>
+      <div id="note" aria-live="polite">
+        <div class="k" id="noteK"></div>
+        <div class="v" id="noteV"></div>
+        <div class="s" id="noteS"></div>
+      </div>
+      <div id="lvl" hidden><span id="lvlP" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></span><span id="lvlT">0:00.0</span></div>
+      <div id="nav" hidden><span id="navD"></span></div>
+      <div id="hint" data-i="hint"></div>
+      <div id="fps" hidden></div>
+      <button id="gear" type="button" data-i-aria="gearAria" aria-label="Settings" aria-expanded="false" aria-controls="panel">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.8v3M12 18.2v3M2.8 12h3M18.2 12h3M5.5 5.5l2.1 2.1M16.4 16.4l2.1 2.1M18.5 5.5l-2.1 2.1M7.6 16.4l-2.1 2.1"/></svg>
+      </button>
+      <div id="panel" hidden>
+        <div>
+          <h2 data-i="levelH"></h2>
+          <div class="chips lvls">
+            <button type="button" data-lv="jbel" data-i="lvJbel" aria-pressed="true"></button>
+            <button type="button" data-lv="tiziri" data-i="lvTiziri" aria-pressed="false"></button>
+            <button type="button" data-lv="dunes" data-i="lvDunes" aria-pressed="false"></button>
+          </div>
+        </div>
+        <div>
+          <h2 data-i="qualityH"></h2>
+          <div class="chips" id="qual">
+            <button type="button" data-q="auto" data-i="qAuto" aria-pressed="true"></button>
+            <button type="button" data-q="low" data-i="qLow" aria-pressed="false"></button>
+            <button type="button" data-q="med" data-i="qMed" aria-pressed="false"></button>
+            <button type="button" data-q="high" data-i="qHigh" aria-pressed="false"></button>
+          </div>
+        </div>
+        <div>
+          <h2 data-i="langH"></h2>
+          <div class="chips langs">
+            <button type="button" data-l="fr" lang="fr" aria-pressed="false">Français</button>
+            <button type="button" data-l="en" lang="en" aria-pressed="false">English</button>
+            <button type="button" data-l="zh" lang="zh" aria-pressed="false">中文</button>
+            <button type="button" data-l="ru" lang="ru" aria-pressed="false">Русский</button>
+            <button type="button" data-l="zgh" lang="zgh" aria-pressed="false">ⵜⴰⵎⴰⵣⵉⵖⵜ</button>
+          </div>
+        </div>
+        <div>
+          <h2 data-i="optionsH"></h2>
+          <div class="rowt">
+            <button type="button" class="toggle" id="optSound" data-i="optSound" aria-pressed="true"></button>
+            <button type="button" class="toggle" id="optFps" data-i="optFps" aria-pressed="false"></button>
+          </div>
+        </div>
+        <button type="button" id="optReset" data-i="reset"></button>
+        <p class="panel-credit" data-i-by></p>
+      </div>
+    </div>
+
+    <div id="touch" hidden>
+      <div id="joy"><div id="knob"></div></div>
+      <button id="bJump" type="button" data-i="tJump"></button>
+      <button id="bBoost" type="button" data-i="tBoost"></button>
+      <button id="bTuck" type="button" data-i="tCrouch"></button>
+    </div>
+
+    <div id="intro">
+      <div class="card">
+        <div class="chips langs">
+          <button type="button" data-l="fr" lang="fr" aria-pressed="false">Français</button>
+          <button type="button" data-l="en" lang="en" aria-pressed="false">English</button>
+          <button type="button" data-l="zh" lang="zh" aria-pressed="false">中文</button>
+          <button type="button" data-l="ru" lang="ru" aria-pressed="false">Русский</button>
+          <button type="button" data-l="zgh" lang="zgh" aria-pressed="false">ⵜⴰⵎⴰⵣⵉⵖⵜ</button>
+        </div>
+        <div class="tfng" aria-hidden="true" lang="zgh"><i></i><span>ⴰⵣⵓⵍ</span><i></i></div>
+        <h1 data-i="title"></h1>
+        <p class="lead" id="lead" data-i="lead"></p>
+        <div class="chips lvls">
+          <button type="button" data-lv="jbel" data-i="lvJbel" aria-pressed="true"></button>
+          <button type="button" data-lv="tiziri" data-i="lvTiziri" aria-pressed="false"></button>
+          <button type="button" data-lv="dunes" data-i="lvDunes" aria-pressed="false"></button>
+        </div>
+        <p class="lead touch-only" data-i="touchLead"></p>
+        <button id="go" type="button" data-i="go"></button>
+        <ul class="keys" data-i-aria="keysAria" aria-label="Controls">
+          <li><span class="k"><kbd>←</kbd><kbd>→</kbd></span><span class="d" data-i="kSteer"></span></li>
+          <li><span class="k"><kbd>↑</kbd><kbd>↓</kbd></span><span class="d" data-i="kPushBrake"></span></li>
+          <li><span class="k"><kbd data-i="keyShift"></kbd></span><span class="d" data-i="kBoost"></span></li>
+          <li><span class="k"><kbd data-i="keySpace"></kbd></span><span class="d" data-i="kJump"></span></li>
+          <li><span class="k"><kbd data-i="keySpace"></kbd><kbd>↓</kbd></span><span class="d" data-i="kFlip"></span></li>
+          <li><span class="k"><kbd data-i="keyC"></kbd></span><span class="d" data-i="kCrouch"></span></li>
+          <li><span class="k"><kbd data-i="keyOrb"></kbd></span><span class="d" data-i="kOrb"></span></li>
+          <li><span class="k"><kbd>R</kbd><kbd>H</kbd><kbd>M</kbd></span><span class="d" data-i="kMisc"></span></li>
+        </ul>
+        <p class="proto" data-i="proto"></p>
+        <p class="proto inspired" data-i="inspired"></p>
+        <p class="credit" data-i-by></p>
+      </div>
+    </div>
+
+    <div id="nogl" hidden><p data-i="nogl"></p></div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script>
+/*__SCRIPT__*/
+  </script>
+</body>
+</html>
