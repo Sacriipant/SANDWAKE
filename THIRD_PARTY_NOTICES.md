@@ -20,6 +20,12 @@ The font is embedded in `dist/index.html` as a base64 data URI by `scripts/build
 
 If the CDN is unreachable the game falls back to system fonts; three.js is required to play.
 
+## Documentation artwork
+
+`docs/banner.svg` contains outlines (not font files) of text set in Reem Kufi and Jost, and of letters from Noto Sans
+Tifinagh, all under the SIL Open Font License 1.1, which allows this. Its dune silhouettes are sampled from the game's
+own terrain function. The screenshots and animations in `docs/media` are captures of the game itself.
+
 ## Development tools
 
 ESLint, Prettier and Playwright are used for linting, formatting and the end-to-end tests (see `package.json`). They are

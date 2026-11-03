@@ -1,0 +1,6 @@
+dist/
+node_modules/
+assets/
+package-lock.json
+# Hand-formatted markup (inline elements, long attribute lists).
+src/template.html

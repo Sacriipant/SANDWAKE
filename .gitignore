@@ -1,0 +1,13 @@
+# Dependencies and build output
+node_modules/
+dist/
+
+# Logs, test output and editor or OS files
+*.log
+test-results/
+playwright-report/
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+_site/
